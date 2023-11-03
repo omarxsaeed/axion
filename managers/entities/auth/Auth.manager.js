@@ -27,7 +27,7 @@ module.exports = class Auth {
       return {
         ok: false,
         code: 409,
-        errors: "User already exists.",
+        errors: "User with this username or email already exists.",
       };
     }
 
