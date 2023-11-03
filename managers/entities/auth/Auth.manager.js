@@ -48,8 +48,16 @@ module.exports = class Auth {
     return { newUser, access_token };
   }
   async login({ email, password }) {
+    const userInfo = {
+      email,
+      password,
+    };
+
+    let validationResult = await this.validators.auth.login(userInfo);
+    if (validationResult) return validationResult;
+
     let user = await this.mongomodels.user.findOne({ email }).select("+password");
-    console.log("🚀 ~ file: Auth.manager.js:47 ~ Auth ~ login ~ user:", user);
+
     if (!user) {
       return {
         ok: false,
