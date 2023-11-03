@@ -24,7 +24,11 @@ module.exports = class Auth {
 
     const user = await this.mongomodels.user.findOne({ $or: [{ username }, { email }] });
     if (user) {
-      throw new Error("User already exists");
+      return {
+        ok: false,
+        code: 409,
+        errors: "User already exists.",
+      };
     }
 
     userInfo.password = await bcrypt.hash(password, 12);
@@ -47,13 +51,21 @@ module.exports = class Auth {
     let user = await this.mongomodels.user.findOne({ email }).select("+password");
     console.log("🚀 ~ file: Auth.manager.js:47 ~ Auth ~ login ~ user:", user);
     if (!user) {
-      throw new Error("Wrong email or password");
+      return {
+        ok: false,
+        code: 400,
+        errors: "Wrong email or password.",
+      };
     }
 
     let passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch) {
-      throw new Error("Wrong email or password");
+      return {
+        ok: false,
+        code: 400,
+        errors: "Wrong email or password.",
+      };
     }
 
     const access_token = this.tokenManager.genLongToken({
