@@ -19,7 +19,7 @@ module.exports = class Auth {
       role,
     };
 
-    let validationResult = await this.validators.user.createUser(userInfo);
+    let validationResult = await this.validators.auth.signUp(userInfo);
     if (validationResult) return validationResult;
 
     const user = await this.mongomodels.user.findOne({ $or: [{ username }, { email }] });
