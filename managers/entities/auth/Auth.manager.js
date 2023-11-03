@@ -39,6 +39,33 @@ module.exports = class Auth {
       },
     });
 
+    user.password = undefined;
+
     return { newUser, access_token };
+  }
+  async login({ email, password }) {
+    let user = await this.mongomodels.user.findOne({ email }).select("+password");
+    console.log("🚀 ~ file: Auth.manager.js:47 ~ Auth ~ login ~ user:", user);
+    if (!user) {
+      throw new Error("Wrong email or password");
+    }
+
+    let passwordMatch = await bcrypt.compare(password, user.password);
+
+    if (!passwordMatch) {
+      throw new Error("Wrong email or password");
+    }
+
+    const access_token = this.tokenManager.genLongToken({
+      userId: user._id,
+      userKey: {
+        email: user.email,
+        role: user.role,
+      },
+    });
+
+    user.password = undefined;
+
+    return { user, access_token };
   }
 };
