@@ -1,22 +1,25 @@
 module.exports = {
   createUser: [
     {
-      label: "username",
+      label: "Username",
       model: "username",
       type: "string",
       required: true,
     },
     {
-      label: "email",
+      label: "Email",
       model: "email",
-      type: "string",
-      // Should be set to true but there's a bug in the validator that keeps asking for an email even though it's provided
-      required: false,
-      regex: "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}$",
+      required: true,
     },
     {
-      label: "password",
+      label: "Password",
       model: "password",
+      type: "string",
+      required: true,
+    },
+    {
+      label: "Role",
+      model: "role",
       type: "string",
       required: true,
     },
