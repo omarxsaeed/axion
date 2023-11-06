@@ -8,7 +8,8 @@ module.exports = class User {
     this.mongomodels = mongomodels;
     this.tokenManager = managers.token;
     this.usersCollection = "user";
-    this.httpExposed = ["post=createUser"];
+    this.httpExposed = ["post=createUser", "get=getMe"];
+    this.cache = cache;
   }
 
   async createUser({ username, email, password, role }) {
@@ -33,5 +34,26 @@ module.exports = class User {
     return {
       user: createdUser,
     };
+  }
+
+  async getMe({ __longToken }) {
+    const userId = __longToken.userId;
+    const cacheKey = `user:${userId}`;
+
+    const cachedUser = await this.cache.key.get({ key: `user:${userId}` });
+
+    if (cachedUser) {
+      return { user: JSON.parse(cachedUser) };
+    }
+
+    const user = await this.mongomodels.user.findById(userId);
+
+    await this.cache.key.set({
+      key: cacheKey,
+      data: JSON.stringify(user),
+      ttl: this.cacheExpired,
+    });
+
+    return { user };
   }
 };
