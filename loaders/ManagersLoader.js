@@ -71,8 +71,19 @@ module.exports = class ManagersLoader {
     this.managers.auth = new Auth(this.injectable);
     this.managers.user = new User(this.injectable);
     /*************************************************************************************************/
+    this.managers.authorizedRoutes = {
+      get: [],
+      post: [
+        {
+          path: "/api/user/createUser",
+          authorizedRoles: ["super_admin", "school_admin"],
+        },
+      ],
+      patch: [],
+      delete: [],
+    };
     this.managers.mwsExec = new VirtualStack({
-      ...{ preStack: ["__longToken", "__device"] },
+      ...{ preStack: ["__device"] },
       ...this.injectable,
     });
     this.managers.userApi = new ApiHandler({ ...this.injectable, ...{ prop: "httpExposed" } });

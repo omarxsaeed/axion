@@ -12,7 +12,7 @@ module.exports = class User {
     this.cache = cache;
   }
 
-  async createUser({ username, email, password, role }) {
+  async createUser({ __longToken, __authorization, username, email, password, role }) {
     const userInfo = { username, email, password, role };
 
     let result = await this.validators.user.createUser(userInfo);
