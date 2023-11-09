@@ -11,12 +11,12 @@ module.exports = class Auth {
     this.httpExposed = ["post=login", "post=signup"];
   }
 
-  async signup({ username, email, password, role = "super_admin" }) {
+  async signup({ username, email, password }) {
     let userInfo = {
       username,
       email,
       password,
-      role,
+      role: "super_admin",
     };
 
     let validationResult = await this.validators.auth.signUp(userInfo);

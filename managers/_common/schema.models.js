@@ -108,6 +108,6 @@ module.exports = {
   role: {
     path: "role",
     type: "string",
-    oneOf: ["school_admin", "student"],
+    oneOf: ["super_admin", "school_admin", "student"],
   },
 };
