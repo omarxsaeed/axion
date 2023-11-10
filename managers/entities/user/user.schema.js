@@ -24,4 +24,20 @@ module.exports = {
       required: true,
     },
   ],
+  updateUser: [
+    {
+      label: "Username",
+      model: "username",
+      type: "string",
+    },
+    {
+      label: "Email",
+      model: "email",
+    },
+    {
+      label: "Password",
+      model: "password",
+      type: "string",
+    },
+  ],
 };
