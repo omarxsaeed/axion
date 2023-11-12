@@ -43,7 +43,7 @@ module.exports = class Auth {
       },
     });
 
-    user.password = undefined;
+    newUser.password = undefined;
 
     return { newUser, access_token };
   }
