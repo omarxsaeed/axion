@@ -8,7 +8,13 @@ module.exports = class User {
     this.mongomodels = mongomodels;
     this.tokenManager = managers.token;
     this.usersCollection = "user";
-    this.httpExposed = ["post=createUser", "get=getMe", "get=getUser", "patch=updateUser"];
+    this.httpExposed = [
+      "post=createUser",
+      "get=getMe",
+      "get=getUser",
+      "patch=updateUser",
+      "delete=deleteUser",
+    ];
     this.cache = cache;
   }
 
@@ -97,5 +103,16 @@ module.exports = class User {
     });
 
     return { user };
+  }
+
+  async deleteUser({ __longToken }) {
+    const userId = __longToken.userId;
+    const cacheKey = `user:${userId}`;
+
+    const user = await this.mongomodels.user.findByIdAndRemove(userId);
+
+    await this.cache.key.delete({ key: cacheKey });
+
+    return { message: "User deleted successfully." };
   }
 };
