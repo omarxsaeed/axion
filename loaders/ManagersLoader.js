@@ -16,6 +16,7 @@ const MongoLoader = require("./MongoLoader");
 const User = require("../managers/entities/user/User.manager");
 const Health = require("../managers/entities/health/Health.manager");
 const Auth = require("../managers/entities/auth/Auth.manager");
+const School = require("../managers/entities/school/School.manager");
 
 /**
  * load sharable modules
@@ -70,12 +71,17 @@ module.exports = class ManagersLoader {
     this.managers.health = new Health(this.injectable);
     this.managers.auth = new Auth(this.injectable);
     this.managers.user = new User(this.injectable);
+    this.managers.school = new School(this.injectable);
     /*************************************************************************************************/
     this.managers.authorizedRoutes = {
       get: [],
       post: [
         {
           path: "/api/user/createUser",
+          authorizedRoles: ["super_admin", "school_admin"],
+        },
+        {
+          path: "/api/school/createSchool",
           authorizedRoles: ["super_admin", "school_admin"],
         },
       ],

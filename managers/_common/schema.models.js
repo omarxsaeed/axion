@@ -110,4 +110,19 @@ module.exports = {
     type: "string",
     oneOf: ["super_admin", "school_admin", "student"],
   },
+  name: {
+    path: "name",
+    type: "string",
+    length: { min: 3, max: 20 },
+  },
+  address: {
+    path: "address",
+    type: "string",
+    length: { min: 3, max: 50 },
+  },
+  administrator: {
+    path: "administrator",
+    type: "string",
+    length: { min: 3, max: 50 },
+  },
 };
