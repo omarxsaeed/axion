@@ -85,7 +85,12 @@ module.exports = class ManagersLoader {
           authorizedRoles: ["super_admin"],
         },
       ],
-      patch: [],
+      patch: [
+        {
+          path: "/api/school/updateSchool",
+          authorizedRoles: ["super_admin", "school_admin"],
+        },
+      ],
       delete: [],
     };
     this.managers.mwsExec = new VirtualStack({
