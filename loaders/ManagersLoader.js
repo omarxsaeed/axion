@@ -78,7 +78,7 @@ module.exports = class ManagersLoader {
       post: [
         {
           path: "/api/user/createUser",
-          authorizedRoles: ["school_admin"],
+          authorizedRoles: ["super_admin", "school_admin"],
         },
         {
           path: "/api/school/createSchool",
