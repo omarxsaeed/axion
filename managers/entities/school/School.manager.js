@@ -8,7 +8,7 @@ module.exports = class School {
     this.mongomodels = mongomodels;
     this.tokenManager = managers.token;
     this.usersCollection = "school";
-    this.httpExposed = ["post=createSchool"];
+    this.httpExposed = ["post=createSchool", "get=getSchools"];
     this.cache = cache;
   }
 
@@ -34,4 +34,24 @@ module.exports = class School {
       school: createdSchool,
     };
   }
+
+  async getSchools() {
+    const cacheKey = `schools`;
+    const cachedSchools = await this.cache.key.get({ key: cacheKey });
+
+    if (cachedSchools) {
+      return { schools: JSON.parse(cachedSchools) };
+    }
+
+    let schools = await this.mongomodels.school.find();
+
+    await this.cache.key.set({
+      key: cacheKey,
+      data: JSON.stringify(schools),
+      ttl: this.cacheExpired,
+    });
+
+    return { schools };
+  }
+
 };
