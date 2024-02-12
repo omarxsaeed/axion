@@ -13,9 +13,6 @@ module.exports = class School {
   }
 
   async createSchool({ __longToken, __authorization, name, address, administrator }) {
-    if (!administrator) {
-      administrator = __longToken.userId;
-    }
     const schoolInfo = { name, address, administrator };
 
     let result = await this.validators.school.createSchool(schoolInfo);
@@ -31,6 +28,7 @@ module.exports = class School {
     }
 
     let createdSchool = await this.mongomodels.school.create(schoolInfo);
+    await this.cache.key.delete({ key: "schools" });
 
     return {
       school: createdSchool,
