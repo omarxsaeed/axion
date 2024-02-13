@@ -6,7 +6,7 @@ module.exports = class Classroom {
     this.mongomodels = mongomodels;
     this.tokenManager = managers.token;
     this.usersCollection = "school";
-    this.httpExposed = ["post=createClassroom", "get=getClassrooms"];
+    this.httpExposed = ["post=createClassroom", "get=getClassrooms", "get=getClassroom"];
     this.cache = cache;
   }
 
@@ -50,5 +50,24 @@ module.exports = class Classroom {
     });
 
     return { classrooms };
+  }
+
+  async getClassroom({ id }) {
+    const cacheKey = `classroom:${id}`;
+    const cachedClassroom = await this.cache.key.get({ key: cacheKey });
+
+    if (cachedClassroom) {
+      return { classroom: JSON.parse(cachedClassroom) };
+    }
+
+    let classroom = await this.mongomodels.classroom.findById(id);
+
+    await this.cache.key.set({
+      key: cacheKey,
+      data: JSON.stringify(classroom),
+      ttl: this.cacheExpired,
+    });
+
+    return { classroom };
   }
 };
