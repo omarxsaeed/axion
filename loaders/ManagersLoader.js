@@ -91,7 +91,12 @@ module.exports = class ManagersLoader {
           authorizedRoles: ["super_admin", "school_admin"],
         },
       ],
-      delete: [],
+      delete: [
+        {
+          path: "/api/school/deleteSchool",
+          authorizedRoles: ["super_admin"],
+        },
+      ],
     };
     this.managers.mwsExec = new VirtualStack({
       ...{ preStack: ["__device"] },

@@ -8,7 +8,13 @@ module.exports = class School {
     this.mongomodels = mongomodels;
     this.tokenManager = managers.token;
     this.usersCollection = "school";
-    this.httpExposed = ["post=createSchool", "get=getSchools", "get=getSchool", "patch=updateSchool"];
+    this.httpExposed = [
+      "post=createSchool",
+      "get=getSchools",
+      "get=getSchool",
+      "patch=updateSchool",
+      "delete=deleteSchool",
+    ];
     this.cache = cache;
   }
 
@@ -80,6 +86,16 @@ module.exports = class School {
     if (result) return result;
 
     let school = await this.mongomodels.school.findOneAndUpdate({ _id: id }, schoolInfo, { new: true });
+
+    await this.cache.key.delete({ key: `school:${id}` });
+    await this.cache.key.delete({ key: "schools" });
+    return {
+      school,
+    };
+  }
+
+  async deleteSchool({ __longToken, __authorization, id }) {
+    let school = await this.mongomodels.school.findByIdAndDelete(id);
 
     await this.cache.key.delete({ key: `school:${id}` });
     await this.cache.key.delete({ key: "schools" });
