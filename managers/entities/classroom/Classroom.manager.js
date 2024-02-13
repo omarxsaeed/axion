@@ -11,6 +11,7 @@ module.exports = class Classroom {
       "get=getClassrooms",
       "get=getClassroom",
       "patch=updateClassroom",
+      "delete=deleteClassroom",
     ];
     this.cache = cache;
   }
@@ -90,6 +91,16 @@ module.exports = class Classroom {
 
     return {
       classroom: updatedClassroom,
+    };
+  }
+
+  async deleteClassroom({ __longToken, __authorization, id }) {
+    let deletedClassroom = await this.mongomodels.classroom.findByIdAndDelete(id);
+    await this.cache.key.delete({ key: "classrooms" });
+    await this.cache.key.delete({ key: `classroom:${id}` });
+
+    return {
+      classroom: deletedClassroom,
     };
   }
 };
