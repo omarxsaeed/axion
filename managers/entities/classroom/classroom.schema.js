@@ -19,4 +19,24 @@ module.exports = {
       required: false,
     },
   ],
+  updateClassroom: [
+    {
+      label: "Name",
+      model: "name",
+      type: "string",
+      required: false,
+    },
+    {
+      label: "School",
+      model: "school",
+      type: "string",
+      required: false,
+    },
+    {
+      label: "Students",
+      model: "students",
+      type: "array",
+      required: false,
+    },
+  ],
 };

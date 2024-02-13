@@ -6,7 +6,12 @@ module.exports = class Classroom {
     this.mongomodels = mongomodels;
     this.tokenManager = managers.token;
     this.usersCollection = "school";
-    this.httpExposed = ["post=createClassroom", "get=getClassrooms", "get=getClassroom"];
+    this.httpExposed = [
+      "post=createClassroom",
+      "get=getClassrooms",
+      "get=getClassroom",
+      "patch=updateClassroom",
+    ];
     this.cache = cache;
   }
 
@@ -69,5 +74,22 @@ module.exports = class Classroom {
     });
 
     return { classroom };
+  }
+
+  async updateClassroom({ __longToken, __authorization, id, name, school, students }) {
+    const classroomInfo = { name, school, students };
+
+    let result = await this.validators.classroom.updateClassroom(classroomInfo);
+    if (result) return result;
+
+    let updatedClassroom = await this.mongomodels.classroom.findByIdAndUpdate(id, classroomInfo, {
+      new: true,
+    });
+    await this.cache.key.delete({ key: "classrooms" });
+    await this.cache.key.delete({ key: `classroom:${id}` });
+
+    return {
+      classroom: updatedClassroom,
+    };
   }
 };

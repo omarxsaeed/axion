@@ -96,6 +96,10 @@ module.exports = class ManagersLoader {
           path: "/api/school/updateSchool",
           authorizedRoles: ["super_admin", "school_admin"],
         },
+        {
+          path: "/api/classroom/updateClassroom",
+          authorizedRoles: ["super_admin", "school_admin"],
+        },
       ],
       delete: [
         {
