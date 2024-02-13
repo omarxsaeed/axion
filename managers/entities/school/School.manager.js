@@ -1,5 +1,3 @@
-const bcrypt = require("bcrypt");
-
 module.exports = class School {
   constructor({ utils, cache, config, cortex, managers, validators, mongomodels } = {}) {
     this.config = config;
