@@ -125,4 +125,17 @@ module.exports = {
     type: "string",
     length: { min: 3, max: 50 },
   },
+  school: {
+    path: "school",
+    type: "string",
+    length: { min: 3, max: 50 },
+  },
+  students: {
+    path: "students",
+    type: "Array",
+    items: {
+      type: "string",
+      length: { min: 3, max: 50 },
+    },
+  },
 };

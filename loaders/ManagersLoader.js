@@ -17,6 +17,7 @@ const User = require("../managers/entities/user/User.manager");
 const Health = require("../managers/entities/health/Health.manager");
 const Auth = require("../managers/entities/auth/Auth.manager");
 const School = require("../managers/entities/school/School.manager");
+const Classroom = require("../managers/entities/classroom/Classroom.manager");
 
 /**
  * load sharable modules
@@ -72,6 +73,7 @@ module.exports = class ManagersLoader {
     this.managers.auth = new Auth(this.injectable);
     this.managers.user = new User(this.injectable);
     this.managers.school = new School(this.injectable);
+    this.managers.classroom = new Classroom(this.injectable);
     /*************************************************************************************************/
     this.managers.authorizedRoutes = {
       get: [],
@@ -83,6 +85,10 @@ module.exports = class ManagersLoader {
         {
           path: "/api/school/createSchool",
           authorizedRoles: ["super_admin"],
+        },
+        {
+          path: "/api/classroom/createClassroom",
+          authorizedRoles: ["super_admin", "school_admin"],
         },
       ],
       patch: [
