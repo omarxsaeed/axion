@@ -108,8 +108,6 @@ module.exports = class Classroom {
   async enrollStudent({ __longToken, __authorization, studentId, classroomId }) {
     const enrollmentInfo = { student: studentId, classroom: classroomId };
 
-    console.log("🚀 ~ Classroom ~ enrollStudent ~ enrollmentInfo:", enrollmentInfo);
-
     let result = await this.validators.classroom.enrollStudent(enrollmentInfo);
     if (result) return result;
 
@@ -157,4 +155,6 @@ module.exports = class Classroom {
       classroom,
     };
   }
+
+  async unerollStudent({ __longToken, __authorization, studentId, classroomId }) {}
 };
