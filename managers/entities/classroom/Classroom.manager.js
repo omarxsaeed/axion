@@ -13,6 +13,7 @@ module.exports = class Classroom {
       "patch=updateClassroom",
       "delete=deleteClassroom",
       "patch=enrollStudent",
+      "patch=unenrollStudent",
     ];
     this.cache = cache;
   }
@@ -156,5 +157,56 @@ module.exports = class Classroom {
     };
   }
 
-  async unerollStudent({ __longToken, __authorization, studentId, classroomId }) {}
+  async unenrollStudent({ __longToken, __authorization, studentId, classroomId }) {
+    const enrollmentInfo = { student: studentId, classroom: classroomId };
+
+    console.log("🚀 ~ Classroom ~ unenrollStudent ~ enrollmentInfo:", enrollmentInfo);
+    let result = await this.validators.classroom.enrollStudent(enrollmentInfo);
+    if (result) return result;
+
+    let classroom = await this.mongomodels.classroom.findById(classroomId);
+    if (!classroom) {
+      return {
+        ok: false,
+        code: 404,
+        errors: "Classroom not found.",
+      };
+    }
+
+    let student = await this.mongomodels.user.findById(studentId);
+    if (!student) {
+      return {
+        ok: false,
+        code: 404,
+        errors: "Student not found.",
+      };
+    }
+
+    if (student.role !== "student") {
+      return {
+        ok: false,
+        code: 400,
+        errors: "User is not a student. You can only unenroll students from a classroom.",
+      };
+    }
+
+    if (!classroom.students.includes(studentId)) {
+      return {
+        ok: false,
+        code: 409,
+        errors: "Student is not enrolled in this classroom.",
+      };
+    }
+
+    classroom.students = classroom.students.filter((student) => student.toString() !== studentId);
+
+    await this.cache.key.delete({ key: "classrooms" });
+    await this.cache.key.delete({ key: `classroom:${classroomId}` });
+
+    await classroom.save();
+
+    return {
+      classroom,
+    };
+  }
 };
