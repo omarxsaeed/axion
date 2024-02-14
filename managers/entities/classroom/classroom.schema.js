@@ -39,4 +39,18 @@ module.exports = {
       required: false,
     },
   ],
+  enrollStudent: [
+    {
+      label: "Classroom",
+      model: "classroom",
+      type: "string",
+      required: true,
+    },
+    {
+      label: "Student",
+      model: "student",
+      type: "string",
+      required: true,
+    },
+  ],
 };
