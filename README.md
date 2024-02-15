@@ -5,6 +5,7 @@ This is a school management application built with Express.js, MongoDB, and Redi
 ## Table of Contents
 
 - [Getting Started](#getting-started)
+- [API Documentation](#api-documentation)
 
 ## Getting Started
 
@@ -64,3 +65,9 @@ This is a school management application built with Express.js, MongoDB, and Redi
    ```
 
    The application will be accessible at http://localhost:5111. (Assuming you didn't provide the `USER_PORT` environment variable)
+
+## API Documentation
+
+Below is the link to the API documentation for the School Management System on Postman. the documentation contains the endpoints, request and response examples, and the expected status codes.
+
+[<img src="https://run.pstmn.io/button.svg" alt="Run In Postman" style="width: 128px; height: 32px;">](https://god.gw.postman.com/run-collection/28492673-9a6ef128-5d1d-41d7-8fd7-68be9b88732e?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D28492673-9a6ef128-5d1d-41d7-8fd7-68be9b88732e%26entityType%3Dcollection%26workspaceId%3D926bf79c-8187-45f8-b2b6-3f869d417cdc)
